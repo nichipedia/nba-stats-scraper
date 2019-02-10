@@ -65,10 +65,17 @@ def get_nba_ytd_stats():
                 currentYear = extract_current_year_team_page(teamUrl)
                 gameLogUrl = extract_team_game_log_url(currentYear)
                 teamStats = get_team_stats(gameLogUrl)
+                totalGames = 0.0
+                wins = 0.0
                 for game in teamStats:
+                    totalGames = totalGames + 1
+                    if game[4] == 'W':
+                        wins = wins + 1
+                    pct = '{0:.3g}'.format(wins/totalGames)
                     teamPoints = int(game[5])
                     oppPoints = int(game[6])
                     totalPoints = teamPoints + oppPoints
+                    game.insert(0, str(pct))
                     game.insert(0, str(totalPoints))
                     game.insert(0, teamName)
                 nbaStats.extend(teamStats)
