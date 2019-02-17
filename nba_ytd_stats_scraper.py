@@ -3,6 +3,39 @@ from bs4 import BeautifulSoup
 
 baseUrl = 'https://www.basketball-reference.com'
 
+teamDict = { 
+    'Atlanta Hawks': 'ATL',
+    'Boston Celtics': 'BOS',
+    'Brooklyn Nets': 'BRK',
+    'Charlotte Hornets': 'CHO',
+    'Chicago Bulls': 'CHI',
+    'Cleveland Cavaliers': 'CLE',
+    'Dallas Mavericks': 'DAL',
+    'Denver Nuggets': 'DEN',
+    'Detroit Pistons': 'DET',
+    'Golden State Warriors': 'GSW',
+    'Houston Rockets': 'HOU',
+    'Indiana Pacers': 'IND',
+    'Los Angeles Clippers': 'LAC',
+    'Los Angeles Lakers': 'LAL',
+    'Memphis Grizzlies': 'MEM',
+    'Miami Heat': 'MIA',
+    'Milwaukee Bucks': 'MIL',
+    'Minnesota Timberwolves': 'MIN',
+    'New Orleans Pelicans': 'NOP',
+    'New York Knicks': 'NYK',
+    'Oklahoma City Thunder': 'OKC',
+    'Orlando Magic': 'ORL',
+    'Philadelphia 76ers': 'PHI',
+    'Phoenix Suns': 'PHO',
+    'Portland Trail Blazers': 'POR',
+    'Sacramento Kings': 'SAC',
+    'San Antonio Spurs': 'SAS',
+    'Toronto Raptors': 'TOR',
+    'Utah Jazz': 'UTA',
+    'Washington Wizards': 'WAS'
+}
+
 def extract_current_year_team_page(teamUrl):
     """
     Returns the url to the teams most current year.
@@ -75,8 +108,12 @@ def get_nba_ytd_stats():
                     teamPoints = int(game[5])
                     oppPoints = int(game[6])
                     totalPoints = teamPoints + oppPoints
+                    if (game[2] == '@'):
+                        game[2] = 'A'
+                    else:
+                        game[2] = 'H'
                     game.insert(0, str(pct))
                     game.insert(0, str(totalPoints))
-                    game.insert(0, teamName)
+                    game.insert(0, teamDict[teamName])
                 nbaStats.extend(teamStats)
     return nbaStats
