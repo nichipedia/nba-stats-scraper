@@ -1,18 +1,23 @@
 from nba_ytd_stats_scraper import get_nba_ytd_stats 
+from vegas_ytd_scraper import get_vegas_lines
+from db_ops import insertMuliRowStats
+from db_ops import insertMultiRowLines
+import sqlite3
 
-nbaStats = get_nba_ytd_stats()
+dbloc = ''
+
+#nbaStats = get_nba_ytd_stats()
+nbaLines = get_vegas_lines()
 
 
-print(nbaStats[64])
-
-def insertMuliRow(rows):
-    command = 'INSERT INTO NBA_GAME_STATS () VALUES ()'
+#insertMuliRowStats(nbaStats)
+insertMultiRowLines(nbaLines)
 
 
 
-#con = sqlite3.connect('app.db')
 
-#cur = con.cursor()
+
+
 
 #cur.execute('INSERT INTO stuff(NAME,AGE) VALUES ("blarg", 21)')
 #

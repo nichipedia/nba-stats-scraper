@@ -1,40 +1,10 @@
 from SimpleGet import simple_get
 from bs4 import BeautifulSoup
+import time
+import datetime
+from TEAMS import TEAMS
 
 baseUrl = 'https://www.basketball-reference.com'
-
-teamDict = { 
-    'Atlanta Hawks': 'ATL',
-    'Boston Celtics': 'BOS',
-    'Brooklyn Nets': 'BRK',
-    'Charlotte Hornets': 'CHO',
-    'Chicago Bulls': 'CHI',
-    'Cleveland Cavaliers': 'CLE',
-    'Dallas Mavericks': 'DAL',
-    'Denver Nuggets': 'DEN',
-    'Detroit Pistons': 'DET',
-    'Golden State Warriors': 'GSW',
-    'Houston Rockets': 'HOU',
-    'Indiana Pacers': 'IND',
-    'Los Angeles Clippers': 'LAC',
-    'Los Angeles Lakers': 'LAL',
-    'Memphis Grizzlies': 'MEM',
-    'Miami Heat': 'MIA',
-    'Milwaukee Bucks': 'MIL',
-    'Minnesota Timberwolves': 'MIN',
-    'New Orleans Pelicans': 'NOP',
-    'New York Knicks': 'NYK',
-    'Oklahoma City Thunder': 'OKC',
-    'Orlando Magic': 'ORL',
-    'Philadelphia 76ers': 'PHI',
-    'Phoenix Suns': 'PHO',
-    'Portland Trail Blazers': 'POR',
-    'Sacramento Kings': 'SAC',
-    'San Antonio Spurs': 'SAS',
-    'Toronto Raptors': 'TOR',
-    'Utah Jazz': 'UTA',
-    'Washington Wizards': 'WAS'
-}
 
 def extract_current_year_team_page(teamUrl):
     """
@@ -112,8 +82,9 @@ def get_nba_ytd_stats():
                         game[2] = 'A'
                     else:
                         game[2] = 'H'
+                    game[1] = time.mktime(datetime.datetime.strptime(game[1], '%Y-%m-%d').timetuple())
                     game.insert(0, str(pct))
                     game.insert(0, str(totalPoints))
-                    game.insert(0, teamDict[teamName])
+                    game.insert(0, TEAMS[teamName])
                 nbaStats.extend(teamStats)
     return nbaStats

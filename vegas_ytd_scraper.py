@@ -1,6 +1,9 @@
 from SimpleGet import simple_get
 from bs4 import BeautifulSoup
 import datetime
+import TEAMS
+import time
+from TEAMS import TEAMS
 
 baseUrl = 'http://www.vegasinsider.com'
 
@@ -19,10 +22,10 @@ def get_team_lines(teamUrl, teamName):
             try:
                 date = create_correct_date(tr.select('td')[0].text.strip())
                 line.append(date)
-                line.append(teamName)
-                line.append(tr.select('td')[1].a.text)
-                line.append(tr.select('td')[2].text)
-                line.append(tr.select('td')[3].text)
+                line.append(TEAMS[teamName])
+                line.append(TEAMS[tr.select('td')[1].a.text])
+                line.append(tr.select('td')[2].text.strip())
+                line.append(tr.select('td')[3].text.strip())
                 teamLines.append(line)
                 if (tr.select('td')[0].text.strip() == lastGameDate):
                     return teamLines
@@ -38,14 +41,14 @@ def create_correct_date(gameDate):
     month = int(now.month)
     if (month > 9):
         newDate = gameDate.strip() + ' ' + str(year)
-        return datetime.datetime.strptime(newDate, '%b %d %Y').date().isoformat()
+        return time.mktime(datetime.datetime.strptime(newDate, '%b %d %Y').timetuple())
     else:
         if 'Dec' in gameDate or 'Nov' in gameDate or 'Oct' in gameDate:
             newDate = gameDate.strip() + ' ' + str(year-1)
-            return datetime.datetime.strptime(newDate, '%b %d %Y').date().isoformat()
+            return time.mktime(datetime.datetime.strptime(newDate, '%b %d %Y').timetuple())
         else:
             newDate = gameDate.strip() + ' ' + str(year)
-            return datetime.datetime.strptime(newDate, '%b %d %Y').date().isoformat()
+            return time.mktime(datetime.datetime.strptime(newDate, '%b %d %Y').timetuple())
 
 
 def extract_last_game_date(lastGameText):
@@ -77,5 +80,3 @@ def get_vegas_lines():
             teamLines = get_team_lines(teamUrl, teamName)
             vegasLines.extend(teamLines)
     return vegasLines
-
-get_vegas_lines()
